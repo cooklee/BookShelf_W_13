@@ -34,12 +34,18 @@
         <li><a href="{% url 'Index' %}">index </a></li>
         <li><a href="{% url 'publisher_list' %}">wydawcy</a></li>
         <li><a href="{% url 'publisher_add' %}">dodaj wydawce</a></li>
+        <li><a href="{% url 'categories_list' %}">kategorie</a></li>
+        <li><a href="{% url 'category_add' %}">dodaj kategorie</a></li>
     </ul>
 </div>
 <div>
     {% block zawartosc %}
         ala ma kota
     {% endblock %}
+<div>
+Publishers: {{ pc }}
+  
+</div>
 </div>
 </body>
 </html>

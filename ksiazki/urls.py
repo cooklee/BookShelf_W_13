@@ -21,4 +21,7 @@ urlpatterns = [
     path('publishers/', views.PublisherListView.as_view(), name='publisher_list'),
     path('add_publishers/', views.AddPublisherView.as_view(), name='publisher_add'),
     path('update_publisher/<int:pk>/', views.UpdatePublisherView.as_view(), name='publisher_update'),
+    path('categories/', views.CategoryListView.as_view(), name='categories_list'),
+    path('add_category/', views.AddCategoryView.as_view(), name='category_add'),
+    path('update_category/<int:pk>/', views.UpdateCategoryView.as_view(), name='category_update'),
 ]
