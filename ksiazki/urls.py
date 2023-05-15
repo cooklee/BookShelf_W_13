@@ -20,4 +20,5 @@ from ksiazki import views
 urlpatterns = [
     path('publishers/', views.PublisherListView.as_view(), name='publisher_list'),
     path('add_publishers/', views.AddPublisherView.as_view(), name='publisher_add'),
+    path('update_publisher/<int:pk>/', views.UpdatePublisherView.as_view(), name='publisher_update'),
 ]

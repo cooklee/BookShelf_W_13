@@ -1,4 +1,8 @@
 {% extends 'base.html' %}
 {% block zawartosc %}
-    lista wydawców
+    <ul>
+    {% for publisher in publishers %}
+        <li><a href="{% url 'publisher_update' publisher.pk %}"> {{ publisher }}</a></li>
+    {% endfor %}
+    </ul>
 {% endblock %}
