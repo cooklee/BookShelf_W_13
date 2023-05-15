@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.views import View
 
-from ksiazki.models import Publisher, Category
+from ksiazki.forms import AddAuthorForm
+from ksiazki.models import Publisher, Category, Author
 
 
 # Create your views here.
@@ -25,6 +26,12 @@ class CategoryListView(View):
         return render(request, 'category.html',
                       {'categories': category})
 
+class AuthorListView(View):
+
+    def get(self, request):
+        authors = Author.objects.order_by('last_name', 'first_name')
+        return render(request, 'author_list.html',  {'authors': authors})
+
 
 class AddPublisherView(View):
 
@@ -35,6 +42,8 @@ class AddPublisherView(View):
         name = request.POST.get('name', '')
         Publisher.objects.create(name=name)
         return redirect('publisher_list')
+
+
 
 class AddCategoryView(View):
 
@@ -72,3 +81,54 @@ class UpdateCategoryView(View):
         category.name = name
         category.save()
         return redirect('categories_list')
+
+
+class AddAuthorView(View):
+
+    def get(self, request):
+        form = AddAuthorForm(initial={'first_name':'sławek', 'last_name':'dsfasd'})
+        return render(request, 'add_author.html', {'form':form})
+
+    def post(self, request):
+        form = AddAuthorForm(request.POST) # stworz mi formularz wypełniony danymi które wysłał użytkownik
+        if form.is_valid(): #wykonaj walidacje formularza (czyli sprawdz poprawność danych)
+            # is_valid jesli dana jest poprawna wykonuje rzutowanie na odp typ i zapisuje
+            # daną w słowniku cleaned_data
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            date = form.cleaned_data['date']
+            Author.objects.create(first_name=first_name, last_name=last_name, birth_date=date)
+            return redirect('add_author')
+        return render(request, 'add_author.html', {'form': form})
+
+
+class UpdateAuthorView(View):
+
+    def get(self, request, pk):
+        author = Author.objects.get(pk=pk)
+        form = AddAuthorForm(initial={'first_name':author.first_name,
+                                      'last_name':author.last_name,
+                                      'date':author.birth_date})
+        return render(request, 'add_author.html', {'form':form})
+
+    def post(self, request, pk):
+        author = Author.objects.get(pk=pk)
+        form = AddAuthorForm(request.POST) # stworz mi formularz wypełniony danymi które wysłał użytkownik
+        if form.is_valid(): #wykonaj walidacje formularza (czyli sprawdz poprawność danych)
+            # is_valid jesli dana jest poprawna wykonuje rzutowanie na odp typ i zapisuje
+            # daną w słowniku cleaned_data
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            date = form.cleaned_data['date']
+            author.first_name=first_name
+            author.last_name=last_name
+            author.birth_date=date
+            author.save()
+            return redirect('add_author')
+        return render(request, 'add_author.html', {'form': form})
+
+
+
+
+
+

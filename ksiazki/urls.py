@@ -24,4 +24,7 @@ urlpatterns = [
     path('categories/', views.CategoryListView.as_view(), name='categories_list'),
     path('add_category/', views.AddCategoryView.as_view(), name='category_add'),
     path('update_category/<int:pk>/', views.UpdateCategoryView.as_view(), name='category_update'),
+    path('add_author/', views.AddAuthorView.as_view(), name='add_author'),
+    path('author_list/', views.AddAuthorView.as_view(), name='author_list'),
+    path('add_author/', views.AddAuthorView.as_view(), name='author_update'),
 ]

@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{%  block zawartosc %}
+    <ul>
+    {% for author in authors %}
+        <li><a href="{% url 'author_update' author.pk %}"> {{ author }}</a></li>
+    {% endfor %}
+    </ul>
+{% endblock %}
