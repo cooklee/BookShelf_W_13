@@ -22,5 +22,6 @@ from ksiazki import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('books/', include('ksiazki.urls')),
+    path('generic/', include('book_generic.urls')),
     path('', views.IndexView.as_view(), name='Index')
 ]
