@@ -2,23 +2,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link href="{%  static '/ksiazki/base.css' %}" rel="stylesheet">
+    <link href="{% static '/ksiazki/base.css' %}" rel="stylesheet">
 </head>
 <body>
 
 <ul class="nav">
-        <li class="nav"><a href="{% url 'Index' %}">index </a></li>
-        <li class="nav"><a href="{% url 'publisher_list' %}">wydawcy</a></li>
-        <li class="nav"><a href="{% url 'publisher_add' %}">dodaj wydawce</a></li>
-        <li class="nav"><a href="{% url 'categories_list' %}">kategorie</a></li>
-        <li class="nav"><a href="{% url 'category_add' %}">dodaj kategorie</a></li>
-        <li class="nav"><a href="{% url 'add_author' %}">dodaj autora</a></li>
-        <li class="nav"><a href="{% url 'author_list' %}">lista autorów</a></li>
+    <li class="nav"><a href="{% url 'Index' %}">index </a></li>
+    <li class="nav"><a href="{% url 'publisher_list' %}">wydawcy</a></li>
+    <li class="nav"><a href="{% url 'publisher_add' %}">dodaj wydawce</a></li>
+    <li class="nav"><a href="{% url 'categories_list' %}">kategorie</a></li>
+    <li class="nav"><a href="{% url 'category_add' %}">dodaj kategorie</a></li>
+    <li class="nav"><a href="{% url 'add_author' %}">dodaj autora</a></li>
+    <li class="nav"><a href="{% url 'author_list' %}">lista autorów</a></li>
+    <li class="nav"><a href="{% url 'book_list' %}">książki</a></li>
+    <li class="nav"><a href="{% url 'book_add' %}">dodaj książke</a></li>
 
-    </ul>
-    <div>
-        {% block zawartosc %}
-        {% endblock %}
-    </div>
+
+</ul>
+<div>
+    {% block zawartosc %}
+    {% endblock %}
+</div>
 </body>
 </html>

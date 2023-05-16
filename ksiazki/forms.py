@@ -34,3 +34,6 @@ class AddBookForm(forms.ModelForm):
         widgets = {
             'categories' : forms.CheckboxSelectMultiple
         }
+
+
+
