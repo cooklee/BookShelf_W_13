@@ -29,6 +29,6 @@ urlpatterns = [
     # path('update_author/', views.AddAuthorView.as_view(), name='author_update'),
     path('add_book/', views.AddBookGeneric.as_view(), name='book_generic_add'),
     path('book_list/', views.BookGenericListView.as_view(), name='book_generic_list'),
-    path('detail_book/<int:pk>/', views.UpdateBookView.as_view(), name='book_generic_detail'),
+    path('update_book/<int:pk>/', views.UpdateBookView.as_view(), name='book_generic_update'),
 
 ]

@@ -5,8 +5,12 @@
     <link href="{% static '/ksiazki/base.css' %}" rel="stylesheet">
 </head>
 <body>
-
+{%  if user.is_authenticated %}
+    Witaj {{ user.username }}
+    <a href="{%  url 'logout' %}">Wyloguj</a>
+{% endif %}
 <ul class="nav">
+    <li class="nav"><a href="{% url 'login' %}">login </a></li>
     <li class="nav"><a href="{% url 'Index' %}">index </a></li>
     <li class="nav"><a href="{% url 'publisher_list' %}">wydawcy</a></li>
     <li class="nav"><a href="{% url 'publisher_add' %}">dodaj wydawce</a></li>

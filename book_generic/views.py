@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import ListView, CreateView, UpdateView
 
+from ksiazki.forms import AddBookForm
 from ksiazki.models import Book, Author
 
 
@@ -10,8 +11,6 @@ class BookGenericListView(ListView):
     model = Book
     template_name = 'list_view.html'
 
-    def get_queryset(self):
-        return super().get_queryset().objects.order_by('title')
 
 class UpdateBookView(UpdateView):
     model = Book
@@ -19,10 +18,9 @@ class UpdateBookView(UpdateView):
     fields = '__all__'
 
 
-
 class AddBookGeneric(CreateView):
     model = Book
-    fields = '__all__'
+    form_class = AddBookForm
     template_name = 'form.html'
 
 
