@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
 
-from ksiazki.forms import AddAuthorForm
+from ksiazki.forms import AddAuthorForm, AddBookForm
 from ksiazki.models import Publisher, Category, Author
 
 
@@ -82,11 +82,23 @@ class UpdateCategoryView(View):
         category.save()
         return redirect('categories_list')
 
+class AddBookView(View):
+
+    def get(self, request):
+        form = AddBookForm()
+        return render(request, 'add_book.html', {'form':form})
+
+    def post(self, request):
+        form = AddBookForm(request.POST)
+        if form.is_valid():
+            book = form.save()
+            return redirect('index')
+        return render(request, 'add_book.html', {'form': form})
 
 class AddAuthorView(View):
 
     def get(self, request):
-        form = AddAuthorForm(initial={'first_name':'sławek', 'last_name':'dsfasd'})
+        form = AddAuthorForm()
         return render(request, 'add_author.html', {'form':form})
 
     def post(self, request):
@@ -126,6 +138,8 @@ class UpdateAuthorView(View):
             author.save()
             return redirect('add_author')
         return render(request, 'add_author.html', {'form': form})
+
+
 
 
 
