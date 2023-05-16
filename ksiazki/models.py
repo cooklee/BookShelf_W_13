@@ -28,8 +28,8 @@ class Author(models.Model):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
-    def get_detail_url(self):
-        return reverse('author_update', kwargs={'pk':self.pk})
+    def get_absolute_url(self):
+        return reverse('author_update', kwargs={'pk': self.pk})
 
 
 class Book(models.Model):
@@ -45,5 +45,5 @@ class Book(models.Model):
     def __str__(self):
         return self.title
 
-    def get_detail_url(self):
-        return reverse('book_detail', kwargs={'pk':self.pk})
+    def get_absolute_url(self):
+        return reverse('book_detail', kwargs={'pk': self.pk})
