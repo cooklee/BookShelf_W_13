@@ -92,7 +92,7 @@ class AddBookView(View):
         form = AddBookForm(request.POST)
         if form.is_valid():
             book = form.save()
-            return redirect('index')
+            return redirect('book_add')
         return render(request, 'add_book.html', {'form': form})
 
 class AddAuthorView(View):
