@@ -27,8 +27,8 @@ urlpatterns = [
     # path('add_author/', views.AddAuthorView.as_view(), name='add_author'),
     path('author_list/', views.AuthorGenericListView.as_view(), name='author_generic_list'),
     # path('update_author/', views.AddAuthorView.as_view(), name='author_update'),
-    # path('add_book/', views.AddBookView.as_view(), name='book_add'),
+    path('add_book/', views.AddBookGeneric.as_view(), name='book_generic_add'),
     path('book_list/', views.BookGenericListView.as_view(), name='book_generic_list'),
-    # path('detail_book/<int:pk>/', views.DetailBookView.as_view(), name='book_detail'),
+    path('detail_book/<int:pk>/', views.UpdateBookView.as_view(), name='book_generic_detail'),
 
 ]

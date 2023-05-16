@@ -6,7 +6,7 @@ from django.urls import reverse
 class Publisher(models.Model):
     name = models.CharField(max_length=128)
 
-    def get_detail_url(self):
+    def get_absolute_url(self):
         return reverse('publisher_update', kwargs={'pk': self.id})
 
     def __str__(self):
@@ -39,8 +39,6 @@ class Book(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     year = models.IntegerField()
 
-    class Meta:
-        ordering = ['title']
 
     def __str__(self):
         return self.title
