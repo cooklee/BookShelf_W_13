@@ -20,9 +20,9 @@
                     <li>{{ comment.date }}
                         <p>{{ comment.content }}</p>
                         {{ comment.user.username }} </li>
-                    {% if comment.user == user %}
-                        <button>Edit</button>
-                    {% endif %}
+
+                       <a href="{% url 'edit_comment' comment.id %}"> <button>Edit</button></a>
+
                 {% endfor %}
             </ul>
         </li>

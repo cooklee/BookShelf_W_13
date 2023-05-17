@@ -1,9 +1,9 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
 from django.shortcuts import render, redirect
 from django.views import View
 
 from ksiazki.forms import AddAuthorForm, AddBookForm, AddCommentForm
-from ksiazki.models import Publisher, Category, Author, Book
+from ksiazki.models import Publisher, Category, Author, Book, Comment
 
 
 # Create your views here.
@@ -119,7 +119,8 @@ class AddAuthorView(View):
         return render(request, 'add_author.html', {'form': form})
 
 
-class UpdateAuthorView(View):
+class UpdateAuthorView(PermissionRequiredMixin, View):
+    permission_required = ['ksiazki.change_author']
 
     def get(self, request, pk):
         author = Author.objects.get(pk=pk)
@@ -145,7 +146,8 @@ class UpdateAuthorView(View):
         return render(request, 'add_author.html', {'form': form})
 
 
-class BookListView(LoginRequiredMixin, View):
+class BookListView(PermissionRequiredMixin, View):
+    permission_required = ['ksiazki.view_book']
 
     def get(self, request):
         books = Book.objects.order_by('title')
@@ -160,7 +162,7 @@ class DetailBookView(View):
 
     def post(self, request, pk):
         if not request.user.is_authenticated:
-            return redirect('http://wp.pl')
+            return redirect('Index')
         book = Book.objects.get(pk=pk)
         form = AddCommentForm(request.POST)
         if form.is_valid():
@@ -170,6 +172,19 @@ class DetailBookView(View):
             comment.save()
             return redirect('book_detail', pk)
         return render(request, 'book_detail.html', {'book': book, 'form': form})
+
+
+class EditCommentView(UserPassesTestMixin, View):
+
+    def test_func(self):
+        comment = Comment.objects.get(pk=self.kwargs['pk'])
+        return comment.user == self.request.user
+
+
+    def get(self, request, pk):
+        comment = Comment.objects.get(pk=pk)
+        form = AddCommentForm(instance=comment)
+        return render(request, 'form.html', {'form':form})
 
 
 
