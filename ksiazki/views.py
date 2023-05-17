@@ -1,7 +1,8 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.views import View
 
-from ksiazki.forms import AddAuthorForm, AddBookForm
+from ksiazki.forms import AddAuthorForm, AddBookForm, AddCommentForm
 from ksiazki.models import Publisher, Category, Author, Book
 
 
@@ -144,7 +145,7 @@ class UpdateAuthorView(View):
         return render(request, 'add_author.html', {'form': form})
 
 
-class BookListView(View):
+class BookListView(LoginRequiredMixin, View):
 
     def get(self, request):
         books = Book.objects.order_by('title')
@@ -154,4 +155,26 @@ class DetailBookView(View):
 
     def get(self, request, pk):
         book = Book.objects.get(pk=pk)
-        return render(request, 'book_detail.html', {'book':book})
+        form = AddCommentForm()
+        return render(request, 'book_detail.html', {'book':book, 'form':form})
+
+    def post(self, request, pk):
+        if not request.user.is_authenticated:
+            return redirect('http://wp.pl')
+        book = Book.objects.get(pk=pk)
+        form = AddCommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.book = book
+            comment.user = request.user
+            comment.save()
+            return redirect('book_detail', pk)
+        return render(request, 'book_detail.html', {'book': book, 'form': form})
+
+
+
+
+
+
+
+

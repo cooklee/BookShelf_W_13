@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from ksiazki.models import Book
+from ksiazki.models import Book, Comment
 
 
 def check_if_malpa(value):
@@ -35,3 +35,12 @@ class AddBookForm(forms.ModelForm):
         widgets = {
             'categories': forms.CheckboxSelectMultiple
         }
+
+class AddCommentForm(forms.ModelForm):
+
+    class Meta:
+        model = Comment
+        fields = ['content']
+
+
+

@@ -8,9 +8,13 @@
 {%  if user.is_authenticated %}
     Witaj {{ user.username }}
     <a href="{%  url 'logout' %}">Wyloguj</a>
+ {% else %}
+    <a href="{% url 'register' %}">Rejestracja</a>
 {% endif %}
+
 <ul class="nav">
     <li class="nav"><a href="{% url 'login' %}">login </a></li>
+
     <li class="nav"><a href="{% url 'Index' %}">index </a></li>
     <li class="nav"><a href="{% url 'publisher_list' %}">wydawcy</a></li>
     <li class="nav"><a href="{% url 'publisher_add' %}">dodaj wydawce</a></li>
@@ -20,6 +24,7 @@
     <li class="nav"><a href="{% url 'author_list' %}">lista autorów</a></li>
     <li class="nav"><a href="{% url 'book_list' %}">książki</a></li>
     <li class="nav"><a href="{% url 'book_add' %}">dodaj książke</a></li>
+
 </ul>
 <ul class="nav">
 

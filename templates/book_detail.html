@@ -13,5 +13,21 @@
 
             </ul>
         </li>
+        <li>
+            komentarze:
+            <ul>
+                {% for comment in book.comment_set.all %}
+                    <li>{{ comment.date }}
+                        <p>{{ comment.content }}</p>
+                        {{ comment.user.username }} </li>
+                    {% if comment.user == user %}
+                        <button>Edit</button>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </li>
     </ul>
+    {% if user.is_authenticated %}
+      {% include 'basic_form.html' %}
+    {% endif %}
 {% endblock %}
