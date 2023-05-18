@@ -3,7 +3,7 @@ from django.test import Client
 from django.urls import reverse
 
 from ksiazki.forms import AddBookForm
-from ksiazki.models import Publisher, Book
+from ksiazki.models import Publisher, Book, Author
 
 
 @pytest.mark.django_db
@@ -106,3 +106,29 @@ def test_add_book_post_year_less_then_b_date(author, wydawcy, kategorie):
     assert isinstance(form, AddBookForm)
     assert 'Nie mógł napisać tej ksiązki w tym roku' in form.errors['__all__']
 
+
+@pytest.mark.django_db
+def test_update_book_get(book):
+    client = Client()
+    url = reverse('book_generic_update', kwargs={'pk':book.pk})
+    response = client.get(url)
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_add_book_post(book):
+    client = Client()
+    url = reverse('book_generic_update', kwargs={'pk':book.pk})
+    autor = Author.objects.get(pk=1)
+    wydawca = Publisher.objects.get(pk=1)
+    data = {
+        'author': autor.id,
+        'publisher': wydawca.id,
+        'year': 2000,
+        'title': 'Gumisie2',
+    }
+    response = client.post(url, data)
+    assert response.status_code == 302
+    assert response.url.startswith(book.get_absolute_url())
+    b = Book.objects.get(title='Gumisie2')
+    assert b.id == book.id

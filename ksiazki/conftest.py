@@ -2,7 +2,7 @@ from datetime import datetime
 
 import pytest
 
-from ksiazki.models import Publisher, Category, Author
+from ksiazki.models import Publisher, Category, Author, Book
 
 
 @pytest.fixture
@@ -26,3 +26,15 @@ def kategorie():
 def author():
     a = Author.objects.create(first_name="Slawek", last_name='bo', birth_date=datetime(1990, 12,12))
     return a
+
+@pytest.fixture
+def book(author, wydawcy, kategorie):
+    b= Book.objects.create(
+        author=author,
+        publisher=wydawcy[0],
+        title = 'Gumisie',
+        year = 1233
+
+    )
+    b.categories.set(kategorie)
+    return b
