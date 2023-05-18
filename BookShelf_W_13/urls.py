@@ -24,5 +24,5 @@ urlpatterns = [
     path('books/', include('ksiazki.urls')),
     path('generic/', include('book_generic.urls')),
     path('accounts/', include('account.urls')),
-    path('', views.IndexView.as_view(), name='Index')
+    path('index/', views.IndexView.as_view(), name='Index')
 ]

@@ -2,6 +2,9 @@ import pytest
 from django.test import Client
 from django.urls import reverse
 
+from ksiazki.forms import AddBookForm
+from ksiazki.models import Publisher, Book
+
 
 @pytest.mark.django_db
 def test_index():
@@ -9,3 +12,97 @@ def test_index():
     url = reverse('Index')
     response = client.get(url)
     assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_publisher_list(wydawcy):
+    client = Client()
+    url = reverse('publisher_list')
+    response = client.get(url)
+    assert response.status_code == 200
+    assert response.context['publishers'].count() == len(wydawcy)
+    for p in wydawcy:
+        assert p in response.context['publishers']
+
+
+@pytest.mark.django_db
+def test_category_list(kategorie):
+    client = Client()
+    url = reverse('categories_list')
+    response = client.get(url)
+    assert response.status_code == 200
+    assert response.context['categories'].count() == len(kategorie)
+    for c in kategorie:
+        assert c in response.context['categories']
+
+
+@pytest.mark.django_db
+def test_add_publisher_get():
+    client = Client()
+    url = reverse('publisher_add')
+    response = client.get(url)
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_add_publisher_post():
+    client = Client()
+    url = reverse('publisher_add')
+    data = {
+        'name': 'ppp'
+    }
+    response = client.post(url, data)
+    assert response.status_code == 302
+    redirect_url = reverse('publisher_list')
+    assert response.url.startswith(redirect_url)
+    Publisher.objects.get(name='ppp')
+
+
+@pytest.mark.django_db
+def test_add_book_get():
+    client = Client()
+    url = reverse('book_add')
+    response = client.get(url)
+    assert response.status_code == 200
+    assert isinstance(response.context['form'], AddBookForm)
+
+
+@pytest.mark.django_db
+def test_add_book_post(author, wydawcy, kategorie):
+    client = Client()
+    url = reverse('book_add')
+    data = {
+        'author': author.id,
+        'publisher': wydawcy[0].id,
+        'year': 2000,
+        'title': 'Gumisie',
+        'categories': [c.id for c in kategorie]
+    }
+    response = client.post(url, data)
+    assert response.status_code == 302
+    assert response.url.startswith(reverse('book_add'))
+    Book.objects.get(title='Gumisie')
+
+
+@pytest.mark.django_db
+def test_add_book_post_year_less_then_b_date(author, wydawcy, kategorie):
+    client = Client()
+    url = reverse('book_add')
+    data = {
+        'author': author.id,
+        'publisher': wydawcy[0].id,
+        'year': 200,
+        'title': 'Gumisie',
+        'categories': [c.id for c in kategorie]
+    }
+    response = client.post(url, data)
+    assert response.status_code == 200
+    try:
+        Book.objects.get(title='Gumisie')
+        assert False
+    except Book.DoesNotExist:
+        assert True
+    form = response.context['form']
+    assert isinstance(form, AddBookForm)
+    assert 'Nie mógł napisać tej ksiązki w tym roku' in form.errors['__all__']
+

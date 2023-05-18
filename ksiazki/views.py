@@ -10,7 +10,7 @@ from ksiazki.models import Publisher, Category, Author, Book, Comment
 class IndexView(View):
 
     def get(self, request):
-        return render(request, 'base.html', {'pc': Publisher.objects.count()})
+        return render(request, 'base.html')
 
 
 class PublisherListView(View):
