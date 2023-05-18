@@ -1,6 +1,7 @@
 from datetime import datetime
 
 import pytest
+from django.contrib.auth.models import User, Permission
 
 from ksiazki.models import Publisher, Category, Author, Book
 
@@ -38,3 +39,16 @@ def book(author, wydawcy, kategorie):
     )
     b.categories.set(kategorie)
     return b
+
+
+@pytest.fixture
+def user():
+    u = User.objects.create(username='gumis')
+    return u
+
+@pytest.fixture
+def user_with_permission():
+    u = User.objects.create(username='gumis')
+    perm = Permission.objects.get(codename='view_book')
+    u.user_permissions.add(perm)
+    return u

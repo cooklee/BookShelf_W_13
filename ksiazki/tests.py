@@ -132,3 +132,29 @@ def test_add_book_post(book):
     assert response.url.startswith(book.get_absolute_url())
     b = Book.objects.get(title='Gumisie2')
     assert b.id == book.id
+
+
+@pytest.mark.django_db
+def test_book_list_view_not_login(book):
+    client = Client()
+    url = reverse('book_list')
+    response = client.get(url)
+    assert response.status_code == 302
+    assert response.url.startswith(reverse('login'))
+
+@pytest.mark.django_db
+def test_book_list_view_login_without_permission(book, user):
+    client = Client()
+    client.force_login(user)
+    url = reverse('book_list')
+    response = client.get(url)
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db
+def test_book_list_view_login_with_permission(book, user_with_permission):
+    client = Client()
+    client.force_login(user_with_permission)
+    url = reverse('book_list')
+    response = client.get(url)
+    assert response.status_code == 200
